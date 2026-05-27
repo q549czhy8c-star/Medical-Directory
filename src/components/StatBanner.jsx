@@ -1,7 +1,9 @@
 import React from 'react';
 import { Activity, ShieldAlert, Cpu, Heart } from 'lucide-react';
+import { translations } from '../services/i18nService';
 
-export default function StatBanner({ diagnoses = [] }) {
+export default function StatBanner({ diagnoses = [], lang = 'zh' }) {
+  const t = translations[lang];
   const total = diagnoses.length;
   const humanEdited = diagnoses.filter(d => d.updated_by && d.updated_by.includes('Human')).length;
   const pendingAISuggestions = diagnoses.filter(d => d.ai_suggestions !== null).length;
@@ -13,8 +15,10 @@ export default function StatBanner({ diagnoses = [] }) {
           <Heart size={20} />
         </div>
         <div className="stat-info">
-          <span className="label">收錄疾病診斷</span>
-          <span className="value">{total} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-muted)' }}>個病例</span></span>
+          <span className="label">{t.diagnosesCount}</span>
+          <span className="value">
+            {total} <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-muted)' }}>{t.diagnosesUnit}</span>
+          </span>
         </div>
       </div>
       
@@ -23,11 +27,11 @@ export default function StatBanner({ diagnoses = [] }) {
           <Activity size={20} />
         </div>
         <div className="stat-info">
-          <span className="label">專家審核比例</span>
+          <span className="label">{t.expertReviewRate}</span>
           <span className="value">
             {total ? Math.round((humanEdited / total) * 100) : 0}% 
             <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--accent-emerald)', marginLeft: '6px' }}>
-              ({humanEdited} 案已審)
+              ({humanEdited} {t.casesApproved})
             </span>
           </span>
         </div>
@@ -38,11 +42,11 @@ export default function StatBanner({ diagnoses = [] }) {
           <Cpu size={20} />
         </div>
         <div className="stat-info">
-          <span className="label">AI 待審查建議</span>
+          <span className="label">{t.pendingAISuggestions}</span>
           <span className="value">
             {pendingAISuggestions} 
-            <span style={{ fontSize: '11px', fontWeight: 500, color: pendingAISuggestions > 0 ? 'var(--accent-amber)' : 'var(--text-muted)', marginLeft: '6px' }}>
-              {pendingAISuggestions > 0 ? '● 需要關注' : '已全部處理'}
+            <span style={{ fontSize: '11.5px', fontWeight: 500, color: pendingAISuggestions > 0 ? 'var(--accent-amber)' : 'var(--text-muted)', marginLeft: '6px' }}>
+              {pendingAISuggestions > 0 ? t.attentionNeeded : t.allProcessed}
             </span>
           </span>
         </div>
@@ -53,10 +57,10 @@ export default function StatBanner({ diagnoses = [] }) {
           <ShieldAlert size={20} />
         </div>
         <div className="stat-info">
-          <span className="label">核保資料庫狀態</span>
-          <span className="value" style={{ fontSize: '16px', fontWeight: 700, color: 'var(--accent-emerald)', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '4px' }}>
+          <span className="label">{t.dbSyncStatus}</span>
+          <span className="value" style={{ fontSize: '13.5px', fontWeight: 700, color: 'var(--accent-emerald)', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '6px' }}>
             <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--accent-emerald)', animation: 'pulse 2s infinite' }}></span>
-            同步運作中 (Local DB)
+            {t.runningStatus}
           </span>
         </div>
       </div>

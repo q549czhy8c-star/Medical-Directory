@@ -1,22 +1,32 @@
 import React from 'react';
 import { Eye, Clock, Sparkles } from 'lucide-react';
+import { translations } from '../services/i18nService';
 
-export default function DiagnosisCard({ diagnosis, onClick }) {
+export default function DiagnosisCard({ diagnosis, onClick, lang = 'zh' }) {
+  const t = translations[lang];
+
+  // Resolve bilingual fields
+  const systemName = lang === 'zh' ? diagnosis.category_body_part_zh : diagnosis.category_body_part_en;
+  const diseaseName = lang === 'zh' ? diagnosis.diagnosis_name_zh : diagnosis.diagnosis_name_en;
+  const ages = lang === 'zh' ? diagnosis.age_group_zh : diagnosis.age_group_en;
+  const genderLabel = lang === 'zh' ? diagnosis.gender_zh : diagnosis.gender_en;
+  const causeSummary = lang === 'zh' ? diagnosis.base_data.causes_zh : diagnosis.base_data.causes_en;
+
   const {
-    diagnosis_name,
-    category_body_part,
-    age_group = [],
-    gender,
-    base_data = {},
     updated_by,
     last_updated,
     ai_suggestions
   } = diagnosis;
 
-  // Format date readable
+  // Format date
   const formattedDate = last_updated 
-    ? new Date(last_updated).toLocaleDateString('zh-TW', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-    : '無紀錄';
+    ? new Date(last_updated).toLocaleDateString(lang === 'zh' ? 'zh-TW' : 'en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    : 'N/A';
 
   const isAIUpdated = updated_by && updated_by.toLowerCase().includes('ai');
 
@@ -24,11 +34,11 @@ export default function DiagnosisCard({ diagnosis, onClick }) {
     <div className="diagnosis-card glass-panel" onClick={onClick}>
       <div className="card-top">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span className="card-system">{category_body_part.split(' ')[0]}</span>
+          <span className="card-system">{systemName.split(' ')[0]}</span>
           <div style={{ display: 'flex', gap: '6px' }}>
             {ai_suggestions && (
               <span className="badge badge-amber" style={{ animation: 'pulse 2s infinite', fontSize: '9px', padding: '2px 6px' }}>
-                <Sparkles size={8} /> AI 建議
+                <Sparkles size={8} /> {lang === 'zh' ? 'AI 建議' : 'AI Advice'}
               </span>
             )}
             <span className={`updater-badge ${isAIUpdated ? 'ai' : 'human'}`}>
@@ -36,26 +46,28 @@ export default function DiagnosisCard({ diagnosis, onClick }) {
             </span>
           </div>
         </div>
-        <h3 className="card-title">{diagnosis_name}</h3>
+        <h3 className="card-title">{diseaseName}</h3>
         <div className="card-meta-badges">
-          {age_group.map(age => (
+          {ages.map(age => (
             <span key={age} className="badge badge-blue" style={{ fontSize: '9px', padding: '1px 6px' }}>{age}</span>
           ))}
-          <span className="badge badge-purple" style={{ fontSize: '9px', padding: '1px 6px' }}>性別: {gender}</span>
+          <span className="badge badge-purple" style={{ fontSize: '9px', padding: '1px 6px' }}>
+            {lang === 'zh' ? `性別: ${genderLabel}` : `Gender: ${genderLabel}`}
+          </span>
         </div>
       </div>
 
       <p className="card-middle">
-        {base_data.causes || '尚無成因說明。'}
+        {causeSummary || 'No details available.'}
       </p>
 
       <div className="card-bottom">
         <div className="updater-info">
           <Clock size={12} />
-          <span>更新於 {formattedDate}</span>
+          <span>{t.lastUpdated} {formattedDate}</span>
         </div>
         <span className="view-more-link">
-          詳細指南
+          {t.viewMore}
           <Eye size={14} />
         </span>
       </div>

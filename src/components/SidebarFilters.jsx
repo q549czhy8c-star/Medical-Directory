@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Filter, RefreshCw, Layers, Calendar, Users } from 'lucide-react';
+import { translations } from '../services/i18nService';
 
 export default function SidebarFilters({
   searchQuery,
@@ -11,16 +12,27 @@ export default function SidebarFilters({
   selectedGender,
   setSelectedGender,
   categories = [],
-  onResetFilters
+  onResetFilters,
+  lang = 'zh'
 }) {
-  
-  const handleAgeGroupChange = (group) => {
-    if (selectedAgeGroups.includes(group)) {
-      setSelectedAgeGroups(selectedAgeGroups.filter(g => g !== group));
+  const t = translations[lang];
+
+  const handleAgeGroupChange = (groupIndex) => {
+    // We map internally by index: 0=兒童/Child, 1=青年/Youth, 2=中年/Middle-aged, 3=老年/Elderly
+    if (selectedAgeGroups.includes(groupIndex)) {
+      setSelectedAgeGroups(selectedAgeGroups.filter(g => g !== groupIndex));
     } else {
-      setSelectedAgeGroups([...selectedAgeGroups, group]);
+      setSelectedAgeGroups([...selectedAgeGroups, groupIndex]);
     }
   };
+
+  const ageGroupsList = lang === 'zh' 
+    ? ['兒童', '青年', '中年', '老年']
+    : ['Child', 'Youth', 'Middle-aged', 'Elderly'];
+
+  const gendersList = lang === 'zh'
+    ? [{ key: '全部', label: t.allGender }, { key: '男', label: t.maleGender }, { key: '女', label: t.femaleGender }]
+    : [{ key: '全部', label: t.allGender }, { key: '男', label: t.maleGender }, { key: '女', label: t.femaleGender }];
 
   return (
     <aside className="sidebar glass-panel">
@@ -28,12 +40,12 @@ export default function SidebarFilters({
       <div className="filter-section">
         <label className="filter-title">
           <Search size={14} />
-          疾病檢索 (中英文對照)
+          {t.searchLabel}
         </label>
         <div className="search-input-wrapper">
           <input
             type="text"
-            placeholder="搜尋疾病名稱，例如：高血壓..."
+            placeholder={t.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -45,14 +57,14 @@ export default function SidebarFilters({
       <div className="filter-section">
         <label className="filter-title">
           <Layers size={14} />
-          身體部位 / 系統
+          {t.categoryLabel}
         </label>
         <div className="category-list">
           <button
             className={`category-btn ${selectedCategory === 'All' ? 'active' : ''}`}
             onClick={() => setSelectedCategory('All')}
           >
-            <span>全部系統</span>
+            <span>{t.allCategories}</span>
             <span className="category-count">
               {categories.reduce((acc, cat) => acc + cat.count, 0)}
             </span>
@@ -64,7 +76,7 @@ export default function SidebarFilters({
               className={`category-btn ${selectedCategory === cat.name ? 'active' : ''}`}
               onClick={() => setSelectedCategory(cat.name)}
             >
-              <span>{cat.name.split(' ')[0]}</span> {/* Display Chinese part mainly */}
+              <span>{cat.name.split(' ')[0]}</span> {/* Clean split */}
               <span className="category-count">{cat.count}</span>
             </button>
           ))}
@@ -75,17 +87,17 @@ export default function SidebarFilters({
       <div className="filter-section">
         <label className="filter-title">
           <Calendar size={14} />
-          適用對象年齡層
+          {t.ageLabel}
         </label>
         <div className="checkbox-group">
-          {['兒童', '青年', '中年', '老年'].map((age) => (
-            <label key={age} className="checkbox-label">
+          {ageGroupsList.map((ageLabel, idx) => (
+            <label key={idx} className="checkbox-label">
               <input
                 type="checkbox"
-                checked={selectedAgeGroups.includes(age)}
-                onChange={() => handleAgeGroupChange(age)}
+                checked={selectedAgeGroups.includes(idx)}
+                onChange={() => handleAgeGroupChange(idx)}
               />
-              <span>{age}</span>
+              <span>{ageLabel}</span>
             </label>
           ))}
         </div>
@@ -95,16 +107,16 @@ export default function SidebarFilters({
       <div className="filter-section">
         <label className="filter-title">
           <Users size={14} />
-          適用對象性別
+          {t.genderLabel}
         </label>
         <div className="radio-group">
-          {['全部', '男', '女'].map((gender) => (
+          {gendersList.map((g) => (
             <div
-              key={gender}
-              className={`radio-btn ${selectedGender === gender ? 'active' : ''}`}
-              onClick={() => setSelectedGender(gender)}
+              key={g.key}
+              className={`radio-btn ${selectedGender === g.key ? 'active' : ''}`}
+              onClick={() => setSelectedGender(g.key)}
             >
-              {gender}
+              {g.label}
             </div>
           ))}
         </div>
@@ -117,7 +129,7 @@ export default function SidebarFilters({
         style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', width: '100%' }}
       >
         <RefreshCw size={14} />
-        重置所有篩選器
+        {t.resetFilters}
       </button>
     </aside>
   );

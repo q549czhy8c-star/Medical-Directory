@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { dbService } from './services/dbService';
+import { translations } from './services/i18nService';
 import StatBanner from './components/StatBanner';
 import SidebarFilters from './components/SidebarFilters';
 import DiagnosisCard from './components/DiagnosisCard';
 import DetailModal from './components/DetailModal';
-import { Sparkles, Shield, Cpu, RefreshCw, AlertCircle, FileText, CheckCircle } from 'lucide-react';
+import { Sparkles, Shield, Cpu, RefreshCw, AlertCircle, FileText, CheckCircle, Globe } from 'lucide-react';
 
 export default function App() {
   const [diagnoses, setDiagnoses] = useState([]);
   const [filteredDiagnoses, setFilteredDiagnoses] = useState([]);
+  const [lang, setLang] = useState('zh'); // 'zh' or 'en'
   
+  const t = translations[lang];
+
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedAgeGroups, setSelectedAgeGroups] = useState([]);
+  const [selectedAgeGroups, setSelectedAgeGroups] = useState([]); // indices: 0, 1, 2, 3
   const [selectedGender, setSelectedGender] = useState('全部');
 
   // Modal State
@@ -32,43 +36,65 @@ export default function App() {
   useEffect(() => {
     let result = [...diagnoses];
 
-    // 1. Text Search Filter (name/ch/en)
+    // 1. Text Search Filter (matches both Chinese and English fields)
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       result = result.filter(d => 
-        d.diagnosis_name.toLowerCase().includes(q) ||
-        (d.category_body_part && d.category_body_part.toLowerCase().includes(q))
+        (d.diagnosis_name_zh && d.diagnosis_name_zh.toLowerCase().includes(q)) ||
+        (d.diagnosis_name_en && d.diagnosis_name_en.toLowerCase().includes(q)) ||
+        (d.category_body_part_zh && d.category_body_part_zh.toLowerCase().includes(q)) ||
+        (d.category_body_part_en && d.category_body_part_en.toLowerCase().includes(q))
       );
     }
 
-    // 2. Category System Filter
+    // 2. Category System Filter (Matches active language categories)
     if (selectedCategory !== 'All') {
-      result = result.filter(d => d.category_body_part === selectedCategory);
+      result = result.filter(d => {
+        const catValue = lang === 'zh' ? d.category_body_part_zh : d.category_body_part_en;
+        return catValue === selectedCategory;
+      });
     }
 
-    // 3. Age Group Filter (Match if diagnosis supports ANY of selected age groups, or all if none selected)
+    // 3. Age Group Filter
     if (selectedAgeGroups.length > 0) {
-      result = result.filter(d => 
-        d.age_group && d.age_group.some(age => selectedAgeGroups.includes(age))
-      );
+      const ageLabelsZh = ['兒童', '青年', '中年', '老年'];
+      const ageLabelsEn = ['Child', 'Youth', 'Middle-aged', 'Elderly'];
+      
+      result = result.filter(d => {
+        if (lang === 'zh') {
+          const activeLabels = selectedAgeGroups.map(idx => ageLabelsZh[idx]);
+          return d.age_group_zh && d.age_group_zh.some(age => activeLabels.includes(age));
+        } else {
+          const activeLabels = selectedAgeGroups.map(idx => ageLabelsEn[idx]);
+          return d.age_group_en && d.age_group_en.some(age => activeLabels.includes(age));
+        }
+      });
     }
 
     // 4. Gender Filter
     if (selectedGender !== '全部') {
       result = result.filter(d => 
-        d.gender === '通用' || d.gender === selectedGender
+        d.gender_zh === '通用' || d.gender_zh === selectedGender
       );
     }
 
     setFilteredDiagnoses(result);
-  }, [diagnoses, searchQuery, selectedCategory, selectedAgeGroups, selectedGender]);
+  }, [diagnoses, searchQuery, selectedCategory, selectedAgeGroups, selectedGender, lang]);
 
   // Toast Notification Trigger
   const triggerNotification = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => {
       setNotification(null);
-    }, 4000);
+    }, 4500);
+  };
+
+  // Toggle app language
+  const handleToggleLanguage = () => {
+    const nextLang = lang === 'zh' ? 'en' : 'zh';
+    setLang(nextLang);
+    setSelectedCategory('All'); // Reset active category since category names changes!
+    triggerNotification(nextLang === 'zh' ? '已切換為繁體中文！' : 'Language set to English!', 'info');
   };
 
   // 1. Manual Form Save
@@ -76,15 +102,14 @@ export default function App() {
     try {
       const updated = dbService.updateDiagnosis({ id, ...updatedFields });
       
-      // Update local state
       setDiagnoses(prev => prev.map(d => d.id === id ? updated : d));
       
-      // Update modal display
       if (selectedDiagnosis && selectedDiagnosis.id === id) {
         setSelectedDiagnosis(updated);
       }
       
-      triggerNotification(`成功儲存「${updated.diagnosis_name.split(' ')[0]}」的核保規則條件！`);
+      const diseaseName = lang === 'zh' ? updated.diagnosis_name_zh.split(' ')[0] : updated.diagnosis_name_en;
+      triggerNotification(`${t.toastSaveSuccess}「${diseaseName}」!`);
     } catch (error) {
       triggerNotification(error.message, 'error');
     }
@@ -101,7 +126,8 @@ export default function App() {
         setSelectedDiagnosis(updated);
       }
       
-      triggerNotification(`已核准並併入「${updated.diagnosis_name.split(' ')[0]}」的 AI 核保更新建議！`);
+      const diseaseName = lang === 'zh' ? updated.diagnosis_name_zh.split(' ')[0] : updated.diagnosis_name_en;
+      triggerNotification(`${t.toastAIAcceptSuccess}「${diseaseName}」!`);
     } catch (error) {
       triggerNotification(error.message, 'error');
     }
@@ -115,30 +141,27 @@ export default function App() {
       if (updated) {
         setDiagnoses(dbService.getDiagnoses());
         
-        // Sync active modal if it matches
         if (selectedDiagnosis && selectedDiagnosis.id === updated.id) {
           setSelectedDiagnosis(updated);
         }
         
-        triggerNotification(
-          `AI Agent 自動化檢索完成！已為「${updated.diagnosis_name.split(' ')[0]}」提出最新臨床核保優化建議！`, 
-          'info'
-        );
+        const diseaseName = lang === 'zh' ? updated.diagnosis_name_zh.split(' ')[0] : updated.diagnosis_name_en;
+        triggerNotification(`${t.toastAISimulateSuccess}「${diseaseName}」!`, 'info');
       } else {
-        triggerNotification('所有疾病已具備待審查的 AI 建議，請審查或更新完畢後再行模擬！', 'info');
+        triggerNotification(t.toastAISimulateLimit, 'info');
       }
     } catch (error) {
-      triggerNotification('模擬失敗：' + error.message, 'error');
+      triggerNotification('Simulation Error: ' + error.message, 'error');
     }
   };
 
   // 4. Reset entire DB to default seed data
   const handleResetDatabase = () => {
-    if (window.confirm('您確定要將核保資料庫重置回最初始的 8 個種子病例資料嗎？手動編輯的數據將會丟失。')) {
+    if (window.confirm(t.resetConfirm)) {
       const defaults = dbService.resetDatabase();
       setDiagnoses(defaults);
       setSelectedDiagnosis(null);
-      triggerNotification('核保資料庫已成功重置為出廠設定！');
+      triggerNotification(t.toastResetSuccess);
     }
   };
 
@@ -148,14 +171,15 @@ export default function App() {
     setSelectedCategory('All');
     setSelectedAgeGroups([]);
     setSelectedGender('全部');
-    triggerNotification('篩選器已重置！', 'info');
+    triggerNotification(t.toastFiltersReset, 'info');
   };
 
-  // Get distinct categories and counts for Sidebar
+  // Get distinct categories and counts for Sidebar depending on active language
   const getCategoriesMeta = () => {
     const counts = {};
     diagnoses.forEach(d => {
-      counts[d.category_body_part] = (counts[d.category_body_part] || 0) + 1;
+      const catName = lang === 'zh' ? d.category_body_part_zh : d.category_body_part_en;
+      counts[catName] = (counts[catName] || 0) + 1;
     });
     return Object.keys(counts).map(name => ({
       name,
@@ -207,24 +231,31 @@ export default function App() {
         <div className="logo-section">
           <h1>
             <Shield size={28} style={{ color: 'var(--accent-indigo)' }} />
-            互動式保險醫療核保指南
+            {t.appTitle}
           </h1>
-          <p>Interactive Medical Underwriting Directory & Decision Support</p>
+          <p>{t.appSubTitle}</p>
         </div>
         <div className="header-actions">
+          {/* Bilingual Switcher pill */}
+          <button className="btn btn-secondary" onClick={handleToggleLanguage} style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            <Globe size={14} />
+            <strong>{lang === 'zh' ? 'English' : '繁體中文'}</strong>
+          </button>
+          
           <button className="btn btn-accent" onClick={handleSimulateAIUpdate}>
             <Sparkles size={16} />
-            模擬 AI Agent 背景更新
+            {t.simulateButton}
           </button>
+          
           <button className="btn btn-secondary" onClick={handleResetDatabase}>
             <RefreshCw size={14} />
-            重置 DB
+            {t.resetDbButton}
           </button>
         </div>
       </header>
 
       {/* Metrics Statistics banner */}
-      <StatBanner diagnoses={diagnoses} />
+      <StatBanner diagnoses={diagnoses} lang={lang} />
 
       {/* Interactive Desktop layout */}
       <div className="dashboard-layout">
@@ -241,6 +272,7 @@ export default function App() {
           setSelectedGender={setSelectedGender}
           categories={getCategoriesMeta()}
           onResetFilters={handleResetFilters}
+          lang={lang}
         />
 
         {/* Content Disease Grid Grid */}
@@ -248,11 +280,11 @@ export default function App() {
           <div className="grid-header">
             <span className="title">
               <FileText size={16} style={{ color: 'var(--accent-indigo)' }} />
-              核保決策字卡 ({filteredDiagnoses.length} 筆疾病相符)
+              {t.cardsTitle} ({filteredDiagnoses.length} {lang === 'zh' ? '筆疾病相符' : 'conditions matched'})
             </span>
             {filteredDiagnoses.length !== diagnoses.length && (
               <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                正在篩選中（總共收錄 {diagnoses.length} 個病例）
+                {t.filteringNotice} ({t.totalNotice} {filteredDiagnoses.length} {t.casesNotice} {diagnoses.length})
               </span>
             )}
           </div>
@@ -264,6 +296,7 @@ export default function App() {
                   key={diagnosis.id}
                   diagnosis={diagnosis}
                   onClick={() => setSelectedDiagnosis(diagnosis)}
+                  lang={lang}
                 />
               ))}
             </div>
@@ -272,12 +305,12 @@ export default function App() {
               <div className="empty-icon">
                 <AlertCircle size={32} />
               </div>
-              <h3 className="empty-title">找不到相符的核保案例</h3>
+              <h3 className="empty-title">{t.emptyTitle}</h3>
               <p className="empty-desc">
-                嘗試修改搜尋關鍵字，或在左側的系統、對象年齡及適用性別篩選器中放寬條件。
+                {t.emptyDesc}
               </p>
               <button className="btn btn-primary" onClick={handleResetFilters}>
-                還原所有篩選器
+                {t.emptyBtn}
               </button>
             </div>
           )}
@@ -291,14 +324,15 @@ export default function App() {
           onClose={() => setSelectedDiagnosis(null)}
           onSave={handleSaveDiagnosis}
           onAcceptAI={handleAcceptAISuggestion}
+          lang={lang}
         />
       )}
 
       {/* Global Application Footer */}
       <footer className="app-footer">
-        <p>© 2026 保險科技核保部 (InsurTech Underwriting Division) & AI Agent Team. All Rights Reserved.</p>
+        <p>© 2026 {t.copyright}</p>
         <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-          聲明：本系統提供之所有醫療成因、風險評估與核保加費參考僅供原型展示 (Prototype Demonstrations)，非屬臨床診療或正式保單核准合約依據。
+          {t.declinedNotice}
         </p>
       </footer>
     </div>

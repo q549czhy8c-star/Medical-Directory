@@ -1,105 +1,41 @@
-# AeroSuite — Premium AI-Ready Office Productivity & Excel Dashboard
+# Medical Underwriting Directory Web Application
 
-Welcome to **AeroSuite**, a state-of-the-art office productivity workspace designed to purifiy text transcripts and filter complex spreadsheets. It runs 100% in the user's browser, providing extreme security, data privacy, and instantaneous processing speed.
+## 項目簡介
 
----
+本專案是一個專為保險業設計的互動式醫療核保指南系統。透過此系統，核保人員能快速檢索不同年齡、性別、身體部位對應的疾病診斷，並查閱其成因、風險、治療方法，以及最重要的核保要求與結果參考。
 
-## 1. Project Overview & Quick Start (For Humans)
+## 系統核心架構
 
-AeroSuite provides two core features tailored for high-speed, local office work:
-1.  **Text Cleaner & Reply Line Replacer:** Cleans plain text transcripts by scanning row-by-row and replacing standalone `"Reply"` rows with user-defined tokens (like `_________`), preserving original spacing and indentations.
-2.  **Smart Excel/CSV Data Filter:** Connects with local `.xlsx`, `.xls`, or `.csv` spreadsheets, dynamically determines data-types, builds complex multi-factor query criteria conjoined by `AND`/`OR` logic, sorts fields, and compiles filtered downloads client-side.
+1. **Frontend**: React.js SPA 互動介面，支援多維度篩選、擬真動態卡片與即時表單編輯。
+2. **Backend/Database**: Node.js + PostgreSQL / MongoDB (本地使用 localStorage 進行極致的互動式前端儲存，已具備完整的 Service-layer 抽象化)。
+3. **Hybrid Content Management**:
+   - Base Data: 醫學常識與風險評估。
+   - Dynamic Rules: 允許核保專家手動調整、AI Agent 自動優化的核保標準。
 
-### Running Locally
-To launch the developmental hot-reloading sandbox server:
+## 核心資料目錄結構
 
-```bash
-# 1. Install required packages
-npm install
-
-# 2. Run the development server
-npm run dev
-```
-
-Open `http://localhost:5173` in your browser to interact with the environment.
+- `/src/components`: UI 篩選器、疾病字卡、編輯表單與統計資訊 Banner
+- `/src/data/schema`: 資料庫 Schema 定義與預設種子資料
+- `/src/services`: 瀏覽器端/伺服器端資料同步服務
+- `/docs` or Root: 系統指引文件（包含 AI 運作規範）
 
 ---
 
-## 2. App Capabilities & Schema (For AI Agents)
+## 部署與本地開發
 
-To ensure future AI Agents can autonomously comprehend and interact with this repository, we establish a structured schema defining the application capabilities, navigation routes, and key interactive components.
+### 本地開發步驟
+1. 安裝套件：
+   ```bash
+   npm install
+   ```
+2. 啟動開發伺服器：
+   ```bash
+   npm run dev
+   ```
+3. 建立生產環境打包：
+   ```bash
+   npm run build
+   ```
 
-```json
-{
-  "$schema": "https://aerosuite.dev/schemas/v1/capabilities.json",
-  "appName": "AeroSuite Workspace",
-  "version": "0.1.0",
-  "architecture": "Vite + React 19 + TypeScript 5 + Tailwind CSS v4",
-  "capabilities": {
-    "modules": [
-      {
-        "id": "dashboard",
-        "name": "Dashboard Overview",
-        "description": "App landing board displaying quick action launching widgets and historical session tracking stats.",
-        "stateVariables": {
-          "stats": {
-            "type": "Object",
-            "properties": {
-              "cleanedLines": "Number (Total line modifications tracked in Text Cleaner)",
-              "filesProcessed": "Number (Total csv/excel files loaded)",
-              "queriesRun": "Number (Total logical query rules created)",
-              "savedRows": "Number (Total processed dataset rows exported)"
-            }
-          }
-        }
-      },
-      {
-        "id": "text_cleaner",
-        "name": "Text Cleaner (Reply Line Replacer)",
-        "description": "Scans raw text row-by-row, replacing isolated matches of the word 'Reply' with custom tokens.",
-        "interactiveComponents": {
-          "inputTextarea": "Source text input field",
-          "replacementInput": "Value substituting matching rows (Default: '_________')",
-          "caseToggle": "Boolean switcher (case-insensitive vs case-sensitive matching)",
-          "outputPreview": "Read-only area showcasing purified text real-time",
-          "copyButton": "Triggers clipboard transfer and saves modification count to local stats"
-        }
-      },
-      {
-        "id": "data_filter",
-        "name": "Smart Excel/CSV Data Filter",
-        "description": "Reads spreadsheets, infers column schemas, supports AND/OR conditional factors, reviews tables, and compiles exports.",
-        "dependencies": ["xlsx (SheetJS)"],
-        "interactiveComponents": {
-          "dragDropZone": "Upload area accepting Excel/CSV. Triggers SheetJS binary parsing.",
-          "pasteTextarea": "Secondary raw spreadsheet text parser using Tab or Comma delimiters.",
-          "queryBuilder": {
-            "rowRules": "Array of FilterFactor objects containing column, operator, value, value2, conjunction",
-            "operators": ["contains", "equals", "gt", "lt", "empty", "not_empty", "starts", "ends", "date_range"]
-          },
-          "liveTable": "Interactive grid sorting columns, paginating records, and searching results globally.",
-          "exportExcel": "Saves workbook as XLSX using XLSX.writeFile",
-          "exportCSV": "Converts sheet to comma-separated text and triggers browser blob download"
-        }
-      }
-    ]
-  }
-}
-```
-
----
-
-## 3. Automated Versioning & Changelog System
-
-This repository implements a strict semantic versioning system designed for programmatic checkouts.
-
-### Automated Versioning Rules
--   **PATCH (v0.0.x):** Internal refactorings, styling polish, bug fixes. No feature changes.
--   **MINOR (v0.x.0):** Added new features, sub-modules, or toolkits. Non-breaking UI upgrades.
--   **MAJOR (vx.0.0):** Structural architecture overrides, framework replacements, breaking database or API changes.
-
-### Changelog Logs
-Every cycle must append a log entry conforming to the strict structure:
-`[Version] [Date] [Agent ID/Role] [Changes Made] [Pending Tech Debt]`
-
-*   **v0.1.0** | **2026-05-26** | **Antigravity AI / Software Architect** | Initialized standard Vite + React + TS project, integrated Tailwind CSS v4, established global glassmorphic design theme, created modular layouts, built Feature 1 (Text Cleaner), completed Feature 2 (Smart Excel/CSV Filter with SheetJS parsing/exporting), and published the dual-purpose README schema. | *Pending Tech Debt: Perform thorough test coverage on large CSV file parsing (above 50,000 rows) to ensure browser heap allocation does not stall the main thread; implement web workers for filtering if required in future major cycles.*
+### 部署至 GitHub Pages (靜態託管)
+本專案已完美設定 GitHub Actions 工作流。每當您將程式碼推送到 `main` 分支時，系統將自動進行 Vite 建置，並將靜態成品推送到 `gh-pages` 分支完成自動部署。

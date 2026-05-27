@@ -1,8 +1,10 @@
-# Medical Underwriting Directory Web Application
+# Medical Underwriting Guide (Medical-Directory)
 
 ## 項目簡介
 
 本專案是一個專為保險業設計的互動式醫療核保指南系統。透過此系統，核保人員能快速檢索不同年齡、性別、身體部位對應的疾病診斷，並查閱其成因、風險、治療方法，以及最重要的核保要求與結果參考。
+
+* **線上展示網頁 (Live Public Website)**: [https://q549czhy8c-star.github.io/Medical-Directory/](https://q549czhy8c-star.github.io/Medical-Directory/)
 
 ## 系統核心架構
 

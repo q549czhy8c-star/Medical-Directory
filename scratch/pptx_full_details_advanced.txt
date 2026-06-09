@@ -1,0 +1,352 @@
+Presentation: FNA Training 2026.pptx
+Number of slides: 25
+
+==================================================
+SLIDE 1
+==================================================
+
+--- SHAPES & TEXTS ---
+[Slide Number Placeholder 2 Text]: 1
+[Title 2 Text]: Training Program 2026 - FNA
+[TextBox 4 Text]: 2026
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 2
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Background
+[Footer Placeholder 2 Text]: For internal use only
+[TextBox 5 Text]: Refer to GL30:
+(https://www.ia.org.hk/en/legislative_framework/files/GL30_English.pdf)
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 3
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Background
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 4
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Flow of solicitation of non-ILAS Policies*
+[Footer Placeholder 2 Text]: For internal use only
+[TextBox 1 Text]: *Non-ILAS product means Non-Investment-Linked Assurance Scheme
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 5
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Suitability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+[TextBox 12 Text]: Product Mapping Table:
+G:\Retail\Common Folder (with OPS)\Product Mapping Table
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 6
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Suitability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+[Callout: Right Arrow 5 Text]: This option is applicable to Saving or Annuity Plans (e.g. LionHarvest Prime, LionTycoon Beyond 2, LionAchiever Elite, Promise Pro, LionPrima, Emerald & Pearl)
+[Rectangle 7 Text]: Additional level of Life or Critical Illness protection needs:
+
+The sum assured applying for Life/CI Product must be within the range of 50% - 120% of the client’s answer here
+[TextBox 18 Text]: Example:
+USD 1,000,000 x 8 = HKD 8,000,000
+
+Option 1: HKD 8,000,000 / 50% = HKD 16,000,000
+Option 2: HKD 8,000,000 / 120% = HKD 6,666,666
+[TextBox 27 Text]: √
+[TextBox 28 Text]: √
+[Arrow: Pentagon 29 Text]: Either one
+[Callout: Right Arrow 6 Text]: For Lion Patron, need Sum Assured x 2.3 for this answer
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 7
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Suitability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+[Rectangle 5 Text]: For ILAS product only
+[Rectangle 13 Text]: This option is applicable to Saving or Annuity Plans (e.g. LionHarvest Prime, LionTycoon Beyond 2, LionAchiever Elite, Promise Pro, LionPrima, Emerald & Pearl)
+[Rectangle 16 Text]: Not applicable
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 8
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Suitability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+[TextBox 22 Text]: 2,156,310
+[TextBox 23 Text]: 30
+[TextBox 24 Text]: 2,405,988
+[TextBox 25 Text]: 30
+[Cloud 26 Text]: Pass or Fail ?
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 9
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Suitability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+[Rectangle 11 Text]: Key points:
+Financial Knowledge AND Experience
+Target Asset Allocation on non-fixed income
+[Rectangle: Rounded Corners 20 Text]: Special Handling for specific brokers:
+1.CITIC2. Fubon^3. CMB*4. OnePlatform5. AMG
+
+* Supplementary Form is required for product mapping
+^ Fubon’s Supplementary Form will be provided for product mapping until Aug 2026
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 10
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Suitability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 11
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 12
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment (Income Approach)
+[Footer Placeholder 2 Text]: For internal use only
+[Rectangle 8 Text]: Applying
+[TextBox 15 Text]: √
+[TextBox 16 Text]: √
+[TextBox 5 Text]: √
+[TextBox 10 Text]: √
+[TextBox 12 Text]: √
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 13
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment (Assets Approach)
+[Footer Placeholder 2 Text]: For internal use only
+[Rectangle 8 Text]: Applying
+[TextBox 11 Text]: HK$1,000,000 x 50% = HK$ 500,000
+[TextBox 4 Text]: √
+[TextBox 19 Text]: √
+[TextBox 20 Text]: √
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 14
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+[Rectangle 22 Text]: Consider use combine approach
+[TextBox 21 Text]: √
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 15
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 16
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 17
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Source of Fund/Wealth Checking
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 18
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Source of Fund/Wealth Checking
+[Footer Placeholder 2 Text]: For internal use only
+[Rectangle 12 Text]: Some broker’s FNAs are found to have NO SOW and/or SOF information. 
+If that is the case, we will obtain Supplementary Form.
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 19
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Insurance Intermediary’s Evaluation and Recommendation
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 20
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment for Premium Financing
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 21
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment for Premium Financing
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 22
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment for Premium Financing
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 23
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment for Premium Financing
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 24
+==================================================
+
+--- SHAPES & TEXTS ---
+[Title 3 Text]: Affordability Assessment for Premium Financing
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
+==================================================
+SLIDE 25
+==================================================
+
+--- SHAPES & TEXTS ---
+[Footer Placeholder 2 Text]: For internal use only
+
+--- SPEAKER NOTES ---
+(None)
+
+
